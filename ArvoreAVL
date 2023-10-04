@@ -1,0 +1,193 @@
+public class ArvoreAVL {
+    private NAVL comeco;
+
+    public NAVL getComeco() {
+        return comeco;
+    }
+
+    public void setComeco(NAVL comeco) {
+        this.comeco = comeco;
+    }
+
+    public NAVL adicionarArvoreAVL(NAVL node, Integer info) {
+        if (node == null) {
+            NAVL novoNo = new NAVL();
+            novoNo.setInfo(info);
+            System.out.println("criando novo no " + info);
+            return novoNo;
+        } else {
+            if (info < node.getInfo()) {
+                node.setEsq(adicionarArvoreAVL(node.getEsq(), info));
+                System.out.println("colocando na esquerda " + info);
+            } else if (info > node.getInfo()) {
+                node.setDir(adicionarArvoreAVL(node.getDir(), info));
+                System.out.println("colocando na direita " + info);
+            }
+            else {
+
+            }
+
+            int balanceFactor = calcularBalanceamento(node);
+
+
+            if (balanceFactor < -1) {
+                if (info > node.getDir().getInfo()) {
+
+                    System.out.println("rotacao na esquerda " + info);
+                    return rotacaoEsquerda(node);
+                }
+                else {
+
+                    comeco.setDir(rotacaoDireita(node.getDir()));
+                    System.out.println("dupla rotacao na esquerda " + info);
+                    return rotacaoEsquerda(node);
+                }
+            }
+
+            if (balanceFactor > 1) {
+                if (info < node.getEsq().getInfo()) {
+
+                    System.out.println("rotacao na diretia " + info);
+                    return rotacaoDireita(node);
+                }
+                else {
+                    node.setEsq(rotacaoEsquerda(node.getEsq()));
+                    System.out.println("dupla rotacao na direita " + info);
+                    return rotacaoDireita(node);
+                }
+            }
+            return node;
+        }}
+
+    public NAVL rotacaoDireita(NAVL raiz) {
+        if(raiz != null && raiz.getEsq() != null) {
+            NAVL novaRaiz = raiz.getEsq();
+            NAVL temp = novaRaiz.getDir();
+            novaRaiz.setDir(raiz);
+            raiz.setEsq(temp);
+            return novaRaiz;
+        }
+        return raiz;
+    }
+
+    public NAVL rotacaoEsquerda(NAVL raiz) {
+        if(raiz != null && raiz.getDir() != null) {
+            NAVL novaRaiz = raiz.getDir();
+            NAVL temp = novaRaiz.getEsq();
+            novaRaiz.setEsq(raiz);
+            raiz.setDir(temp);
+            return novaRaiz;
+        }
+        return raiz;
+    }
+
+    public static int altura(NAVL no) {
+        if (no == null || no.getAltura() == null) {
+            return -1;
+        }
+        return no.getAltura();
+    }
+
+    public NAVL removerArvoreAVL(NAVL node, Integer info) {
+        if (node == null) {
+            return null;
+        }
+
+        if (info < node.getInfo()) {
+            node.setEsq(removerArvoreAVL(node.getEsq(), info));
+        }
+        else if (info > node.getInfo()) {
+            node.setDir(removerArvoreAVL(node.getDir(), info));
+        }
+        else {
+
+            if (node.getEsq() == null) {
+                return node.getDir();
+            }
+            else if (node.getDir() == null) {
+                return node.getEsq();
+            }
+            else {
+
+                NAVL minNode = encontrarMinimo(node.getDir());
+                node.setInfo(minNode.getInfo());
+                node.setDir(removerArvoreAVL(node.getDir(), minNode.getInfo()));
+            }
+        }
+
+
+        int balanceFactor = altura(node.getDir()) - altura(node.getEsq());
+
+
+        if (balanceFactor > 1) {
+            if (altura(node.getDir().getEsq()) > altura(node.getDir().getDir())) {
+
+                node.setDir(rotacaoDireita(node.getDir()));
+            }
+
+            return rotacaoEsquerda(node);
+        }
+        else if (balanceFactor < -1) {
+            if (altura(node.getEsq().getDir()) > altura(node.getEsq().getEsq())) {
+
+                node.setEsq(rotacaoEsquerda(node.getEsq()));
+            }
+            // Rotação simples à direita
+            return rotacaoDireita(node);
+        }
+
+        return node;
+    }
+
+    public NAVL encontrarMinimo(NAVL node) {
+        if (node == null) {
+            return null;
+        }
+
+        while (node.getEsq() != null) {
+            node = node.getEsq();
+        }
+
+        return node;
+    }
+    public void imprimeNAVL(NAVL node) {
+        if (node != null) {
+            System.out.print("Node atual: " + node.getInfo());
+
+            if (node.getEsq() != null) {
+                System.out.print(", Esquerda: " + node.getEsq().getInfo());
+            } else {
+                System.out.print(", Esquerda: vazio");
+            }
+
+            if (node.getDir() != null) {
+                System.out.print(", Direita: " + node.getDir().getInfo());
+            } else {
+                System.out.print(", Direita: vazio");
+            }
+
+            System.out.println();
+
+            imprimeNAVL(node.getEsq());
+            imprimeNAVL(node.getDir());
+        }
+    }
+
+    public void preordem(NAVL node) {
+        if (node == null)
+            return;
+        System.out.print(node.getInfo() + " -> ");
+        preordem(node.getEsq());
+        preordem(node.getDir());
+
+    }
+
+    public static int calcularBalanceamento(NAVL raiz) {
+        if (raiz == null) {
+            return 0;
+        }
+        int alturaEsquerda = altura(raiz.getEsq());
+        int alturaDireita = altura(raiz.getDir());
+        return alturaEsquerda - alturaDireita;
+    }
+}
