@@ -1,0 +1,37 @@
+private Integer info;
+    private Node esq;
+    private Node dir;
+
+    public Node()
+    {
+        this.info = null;
+        this.dir = null;
+        this.esq = null;
+    }
+
+    public void setInfo(Integer info) {
+        this.info = info;
+    }
+
+    public Integer getInfo() {
+        return info;
+    }
+
+    public void setEsq(Node esq) {
+        this.esq = esq;
+    }
+
+    public Node getEsq() {
+        return esq;
+    }
+
+    public void setDir(Node dir) {
+        this.dir = dir;
+    }
+
+    public Node getDir() {
+        return dir;
+    }
+
+}
+
