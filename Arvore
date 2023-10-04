@@ -114,4 +114,21 @@ public void preordem(Node node) {
     public void setComeco(Node comeco){
         this.comeco = comeco;
     }
+public Node busca(Node node, int info) {
+        if (node == null || node.getInfo() == info) {
+            if(node != null)
+                System.out.println(node.getInfo());
+            else
+                System.out.println("não encontrado");
+            return node;
+        }
+
+        if (info < node.getInfo()) {
+            System.out.println(node.getEsq().getInfo() + "\n");
+            return busca(node.getEsq(), info);
+        } else {
+            System.out.println(node.getDir().getInfo() + "\n");
+            return busca(node.getDir(), info);
+        }
+    }
 }
