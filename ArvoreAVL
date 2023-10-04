@@ -190,4 +190,21 @@ public class ArvoreAVL {
         int alturaDireita = altura(raiz.getDir());
         return alturaEsquerda - alturaDireita;
     }
+public NAVL busca(NAVL node, int info) {
+        if (node == null || node.getInfo() == info) {
+            if(node != null)
+                System.out.println(node.getInfo());
+            else
+                System.out.println("não encontrado");
+            return node;
+        }
+
+        if (info < node.getInfo()) {
+            System.out.println(node.getEsq().getInfo() + "\n");
+            return busca(node.getEsq(), info);
+        } else {
+            System.out.println(node.getDir().getInfo() + "\n");
+            return busca(node.getDir(), info);
+        }
+    }
 }
