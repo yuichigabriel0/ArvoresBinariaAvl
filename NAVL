@@ -1,0 +1,41 @@
+public class NAVL {
+    private Integer info;
+    private NAVL esq;
+    private NAVL dir;
+    private Integer altura;
+
+    public NAVL()
+    {
+        this.info = null;
+        this.dir = null;
+        this.esq = null;
+        this.altura = null;
+    }
+
+    public void setInfo(Integer info) {
+        this.info = info;
+    }
+
+    public Integer getInfo() {
+        return info;
+    }
+
+    public void setEsq(NAVL esq) {
+        this.esq = esq;
+    }
+
+    public NAVL getEsq() {
+        return esq;
+    }
+
+    public void setDir(NAVL dir) {
+        this.dir = dir;
+    }
+
+    public NAVL getDir() {
+        return dir;
+    }
+    public void setAltura(Integer altura){this.altura = altura;}
+    public Integer getAltura(){return altura;}
+
+}
