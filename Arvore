@@ -1,0 +1,117 @@
+class Arvore {
+    private Node comeco;
+//ADIÇÃO
+    
+    public Node adicionarArvore(Node node, Integer info) {
+        if (node == null) {
+            node = new Node();
+            node.setInfo(info);
+        } else {
+            if (info > node.getInfo()) {
+                node.setDir(adicionarArvore(node.getDir(), info));
+            } else {
+                node.setEsq(adicionarArvore(node.getEsq(), info));
+            }
+        }
+        return node;
+    }
+//REMOÇÃO
+
+    public Node removerArvore(Node node, Integer info) {
+        if (node == null) {
+            return null;
+        }
+
+        if (info < node.getInfo()) {
+            node.setEsq(removerArvore(node.getEsq(), info));
+        }
+        else if (info > node.getInfo()) {
+            node.setDir(removerArvore(node.getDir(), info));
+        }
+        else {
+            if (node.getEsq() == null) {
+                return node.getDir();
+            } else if (node.getDir() == null) {
+                return node.getEsq();
+            }
+            node.setInfo(encontrarMinimo(node.getDir()));
+            node.setDir(removerArvore(node.getDir(), node.getInfo()));
+        }
+        return node;
+    }
+
+    public Integer encontrarMinimo(Node node) {
+        Integer minimo = 0;
+        while (node.getEsq() != null) {
+            minimo = node.getEsq().getInfo();
+            node = node.getEsq();
+        }
+        return minimo;
+    }
+    public Integer encontrarMaximo(Node node) {
+        Integer max = 0;
+        while (node.getDir() != null) {
+            max = node.getDir().getInfo();
+            node = node.getDir();
+        }
+        return max;
+    }
+
+
+
+//IMPRESSÃO
+public void preordem(Node node) {
+    if (node == null)
+        return;
+    System.out.print(node.getInfo() + " -> ");
+    preordem(node.getEsq());
+    preordem(node.getDir());
+
+}
+
+    public void posordem(Node node) {
+        if (node == null)
+            return;
+        posordem(node.getEsq());
+        posordem(node.getDir());
+        System.out.print(node.getInfo() + " -> ");
+
+    }
+
+    public void inordem(Node node) {
+        if (node == null)
+            return;
+        inordem(node.getEsq());
+        System.out.print(node.getInfo() + " -> ");
+        inordem(node.getDir());
+
+    }
+    public void imprimeNode(Node node) {
+        if (node != null) {
+            System.out.print("Node atual: " + node.getInfo());
+
+            if (node.getEsq() != null) {
+                System.out.print(", Esquerda: " + node.getEsq().getInfo());
+            } else {
+                System.out.print(", Esquerda: vazio");
+            }
+
+            if (node.getDir() != null) {
+                System.out.print(", Direita: " + node.getDir().getInfo());
+            } else {
+                System.out.print(", Direita: vazio");
+            }
+
+            System.out.println();
+
+            imprimeNode(node.getEsq());
+            imprimeNode(node.getDir());
+        }
+    }
+    public Node getComeco(){
+        return comeco;
+    }
+    public void setComeco(Node comeco){
+        this.comeco = comeco;
+    }
+}
